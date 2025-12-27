@@ -1,5 +1,6 @@
 const Message = require('../models/Message');
 const Selection = require('../models/Selection');
+const User = require('../models/User');
 
 // @desc    Create a message/task for selected participant
 // @route   POST /api/messages

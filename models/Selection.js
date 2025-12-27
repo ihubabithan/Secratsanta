@@ -29,13 +29,11 @@ const selectionSchema = new mongoose.Schema({
   giverUserId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
-    required: true,
-    unique: true // Each user can only make one selection
+    required: true
   },
   encryptedReceiverName: {
     type: String,
-    required: true,
-    unique: true // Each participant can only be selected once
+    required: true
   },
   timestamp: {
     type: Date,
