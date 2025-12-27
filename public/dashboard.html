@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Secret Santa</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="nav-brand">🎅 Secret Santa</h1>
+            <div class="nav-menu">
+                <span id="user-name" class="nav-username"></span>
+                <a href="/tasks" class="nav-link">View Tasks</a>
+                <button id="logout-btn" class="btn btn-small">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="dashboard-header">
+            <h2>Dashboard</h2>
+            <p>Welcome, <span id="welcome-user"></span>!</p>
+        </div>
+
+        <div id="error-message" class="error-message" style="display: none;"></div>
+        <div id="success-message" class="success-message" style="display: none;"></div>
+
+        <!-- Available Participants Section -->
+        <div class="card" id="participants-section" style="display: none;">
+            <h3>Available Participants</h3>
+            <p class="subtitle">Select one participant as your Secret Santa recipient</p>
+            <div id="participants-list" class="participants-grid">
+                <p class="loading">Loading participants...</p>
+            </div>
+        </div>
+
+        <!-- Send Message Section -->
+        <div class="card" id="message-section" style="display: none;">
+            <h3>Send Task/Message</h3>
+            <form id="message-form">
+                <div class="form-group">
+                    <label for="task-description">Task Description</label>
+                    <textarea id="task-description" name="taskDescription" rows="4" required maxlength="500" placeholder="Enter task description..."></textarea>
+                    <small class="char-count">0 / 500 characters</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="deadline">Deadline (Optional)</label>
+                    <input type="datetime-local" id="deadline" name="deadline">
+                </div>
+
+                <button type="submit" class="btn btn-primary">Send Task (Anonymous)</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="/js/dashboard.js"></script>
+</body>
+</html>

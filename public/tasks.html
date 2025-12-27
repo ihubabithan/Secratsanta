@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Public Tasks - Secret Santa</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <h1 class="nav-brand">🎅 Secret Santa</h1>
+            <div class="nav-menu">
+                <span id="user-name" class="nav-username"></span>
+                <a href="/dashboard" class="nav-link">Dashboard</a>
+                <button id="logout-btn" class="btn btn-small">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="dashboard-header">
+            <h2>Public Tasks</h2>
+            <p>View all assigned tasks and messages</p>
+        </div>
+
+        <div id="error-message" class="error-message" style="display: none;"></div>
+
+        <div class="card">
+            <div id="tasks-list">
+                <p class="loading">Loading tasks...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/tasks.js"></script>
+</body>
+</html>
