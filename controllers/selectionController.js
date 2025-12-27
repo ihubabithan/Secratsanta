@@ -38,6 +38,80 @@ exports.getAvailableParticipants = async (req, res) => {
   }
 };
 
+// @desc    Automatically assign a random participant
+// @route   POST /api/selections/auto-assign
+// @access  Private
+exports.autoAssignParticipant = async (req, res) => {
+  try {
+    // Check if user already made a selection
+    const existingSelection = await Selection.findOne({ giverUserId: req.user.id });
+    
+    if (existingSelection) {
+      return res.status(400).json({
+        success: false,
+        message: 'You have already selected a participant'
+      });
+    }
+
+    // Get all users
+    const allUsers = await User.find({}, 'username email');
+
+    // Get all selections and decrypt receiver names
+    const selections = await Selection.find({});
+    const selectedUsernames = selections.map(s => s.getDecryptedReceiverName());
+
+    // Get current user
+    const currentUser = await User.findById(req.user.id);
+
+    // Filter out current user and already selected participants
+    const available = allUsers.filter(user => 
+      user.username !== currentUser.username && 
+      !selectedUsernames.includes(user.username)
+    );
+
+    if (available.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'No available participants to assign'
+      });
+    }
+
+    // Randomly select one participant
+    const randomIndex = Math.floor(Math.random() * available.length);
+    const selectedParticipant = available[randomIndex];
+
+    // Encrypt the receiver username
+    const encryptedReceiverName = Selection.encryptReceiverName(selectedParticipant.username);
+
+    // Create selection
+    const selection = await Selection.create({
+      giverUserId: req.user.id,
+      encryptedReceiverName
+    });
+
+    res.status(201).json({
+      success: true,
+      message: 'Participant automatically assigned successfully',
+      data: {
+        _id: selection._id,
+        giverUserId: selection.giverUserId,
+        timestamp: selection.timestamp,
+        assignedPerson: {
+          username: selectedParticipant.username,
+          email: selectedParticipant.email
+        }
+      }
+    });
+  } catch (error) {
+    console.error('Auto assign participant error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Server error',
+      error: error.message
+    });
+  }
+};
+
 // @desc    Select a participant
 // @route   POST /api/selections
 // @access  Private

@@ -29,10 +29,13 @@
 
         <!-- Available Participants Section -->
         <div class="card" id="participants-section" style="display: none;">
-            <h3>Available Participants</h3>
-            <p class="subtitle">Select one participant as your Secret Santa recipient</p>
-            <div id="participants-list" class="participants-grid">
-                <p class="loading">Loading participants...</p>
+            <h3>Select Your Secret Santa</h3>
+            <p class="subtitle">Click the button below to automatically get assigned a Secret Santa recipient</p>
+            
+            <div class="auto-assign-container">
+                <button id="auto-assign-btn" class="btn btn-primary btn-large">
+                    🎲 Auto-Assign My Secret Santa
+                </button>
             </div>
         </div>
 
@@ -53,6 +56,26 @@
 
                 <button type="submit" class="btn btn-primary">Send Task (Anonymous)</button>
             </form>
+        </div>
+    </div>
+
+    <!-- Assignment Result Modal -->
+    <div id="assignment-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🎉 Assignment Complete!</h2>
+            </div>
+            <div class="modal-body">
+                <p class="modal-label">You have been assigned to:</p>
+                <div class="assigned-person">
+                    <h3 id="assigned-name"></h3>
+                    <p id="assigned-email"></p>
+                </div>
+                <p class="modal-note">⚠️ Remember this person! This information won't be shown again.</p>
+            </div>
+            <div class="modal-footer">
+                <button id="modal-close-btn" class="btn btn-primary">Got it!</button>
+            </div>
         </div>
     </div>
 

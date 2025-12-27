@@ -44,35 +44,70 @@ async function loadAvailableParticipants() {
         const data = await apiCall('/api/selections/available');
         
         const participantsSection = document.getElementById('participants-section');
-        const participantsList = document.getElementById('participants-list');
         
         if (data.count === 0) {
-            participantsList.innerHTML = '<p class="no-data">No participants available at the moment.</p>';
-        } else {
-            participantsList.innerHTML = data.data.map(participant => `
-                <div class="participant-card">
-                    <h4>${participant.username}</h4>
-                    <p class="email">${participant.email}</p>
-                    <button class="btn btn-primary btn-small select-btn" data-username="${participant.username}">
-                        Select
-                    </button>
-                </div>
-            `).join('');
-            
-            // Add event listeners to select buttons
-            document.querySelectorAll('.select-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    const participantUsername = e.target.dataset.username;
-                    selectParticipant(participantUsername);
-                });
-            });
+            showError('No participants available at the moment.');
+            return;
         }
+        
+        // Add auto-assign button listener
+        document.getElementById('auto-assign-btn').addEventListener('click', autoAssignParticipant);
         
         participantsSection.style.display = 'block';
     } catch (error) {
         showError('Failed to load available participants');
         console.error(error);
     }
+}
+
+async function autoAssignParticipant() {
+    try {
+        const btn = document.getElementById('auto-assign-btn');
+        btn.disabled = true;
+        btn.textContent = '🎲 Assigning...';
+        
+        console.log('Calling auto-assign API...');
+        const data = await apiCall('/api/selections/auto-assign', {
+            method: 'POST'
+        });
+        
+        console.log('API response:', data);
+        
+        if (data.success && data.data.assignedPerson) {
+            // Show modal with assigned person info
+            showAssignmentModal(data.data.assignedPerson);
+        }
+    } catch (error) {
+        console.error('Auto-assign error:', error);
+        showError(error.message || 'Failed to auto-assign participant');
+        const btn = document.getElementById('auto-assign-btn');
+        if (btn) {
+            btn.disabled = false;
+            btn.textContent = '🎲 Auto-Assign My Secret Santa';
+        }
+    }
+}
+
+function showAssignmentModal(assignedPerson) {
+    const modal = document.getElementById('assignment-modal');
+    document.getElementById('assigned-name').textContent = assignedPerson.username;
+    document.getElementById('assigned-email').textContent = assignedPerson.email;
+    
+    modal.style.display = 'flex';
+    
+    // Close modal on button click
+    document.getElementById('modal-close-btn').onclick = () => {
+        modal.style.display = 'none';
+        window.location.reload();
+    };
+    
+    // Close modal on outside click
+    modal.onclick = (e) => {
+        if (e.target === modal) {
+            modal.style.display = 'none';
+            window.location.reload();
+        }
+    };
 }
 
 async function selectParticipant(receiverUsername) {
