@@ -444,6 +444,16 @@ body {
     background: #fff5f5;
 }
 
+.task-card.completed {
+    background: #d4edda;
+    border-left-color: var(--success-color);
+}
+
+.task-card.incomplete {
+    background: #f8d7da;
+    border-left-color: var(--error-color);
+}
+
 .task-header {
     display: flex;
     justify-content: space-between;
@@ -451,6 +461,69 @@ body {
     margin-bottom: 15px;
     flex-wrap: wrap;
     gap: 10px;
+}
+
+.task-header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.status-badge {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.status-badge.completed {
+    background: var(--success-color);
+    color: white;
+}
+
+.status-badge.incomplete {
+    background: var(--error-color);
+    color: white;
+}
+
+.admin-actions {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.btn-complete,
+.btn-incomplete {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-weight: 500;
+}
+
+.btn-complete {
+    background: var(--success-color);
+    color: white;
+}
+
+.btn-complete:hover {
+    background: #218838;
+    transform: translateY(-2px);
+}
+
+.btn-incomplete {
+    background: var(--error-color);
+    color: white;
+}
+
+.btn-incomplete:hover {
+    background: #c82333;
+    transform: translateY(-2px);
 }
 
 .task-participants {
@@ -634,6 +707,101 @@ body {
     color: var(--secondary-color);
     font-size: 1.8rem;
     margin: 0 0 10px 0;
+}
+
+/* Leaderboard Styles */
+.leaderboard-info {
+    padding: 20px;
+    background: var(--bg-light);
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.leaderboard-info ul {
+    margin-top: 10px;
+    padding-left: 20px;
+}
+
+.leaderboard-info li {
+    margin: 5px 0;
+}
+
+.leaderboard-table {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.leaderboard-row {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    background: var(--bg-light);
+    border-radius: 10px;
+    transition: all 0.3s;
+    border-left: 4px solid transparent;
+}
+
+.leaderboard-row:hover {
+    transform: translateX(5px);
+    box-shadow: var(--shadow);
+}
+
+.leaderboard-row.current-user {
+    background: #fff9e6;
+    border-left-color: #ffc107;
+    font-weight: 500;
+}
+
+.leaderboard-row .rank {
+    font-size: 1.5rem;
+    font-weight: bold;
+    min-width: 60px;
+    text-align: center;
+}
+
+.leaderboard-row .user-info {
+    flex: 1;
+    margin: 0 20px;
+}
+
+.leaderboard-row .username {
+    font-size: 1.1rem;
+    color: var(--text-dark);
+    margin-bottom: 5px;
+}
+
+.leaderboard-row .user-stats {
+    display: flex;
+    gap: 15px;
+    font-size: 0.9rem;
+}
+
+.leaderboard-row .stat {
+    color: var(--text-light);
+}
+
+.leaderboard-row .stat.completed {
+    color: var(--success-color);
+}
+
+.leaderboard-row .stat.incomplete {
+    color: var(--error-color);
+}
+
+.leaderboard-row .score {
+    font-size: 1.8rem;
+    font-weight: bold;
+    min-width: 80px;
+    text-align: center;
+}
+
+.leaderboard-row .score.positive {
+    color: var(--success-color);
+}
+
+.leaderboard-row .score.negative {
+    color: var(--error-color);
 }
 
 .assigned-person p {

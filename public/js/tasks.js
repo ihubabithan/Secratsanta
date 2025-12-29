@@ -71,18 +71,41 @@ async function loadTasks(filter) {
 
 function createTaskCard(task) {
     const senderName = 'Anonymous';
-    const receiverName = task.receiverId.username;
+    const receiverName = task.receiverId ? task.receiverId.username : 'Unknown';
     const isMyTask = task.senderId && task.senderId === currentUser.id;
+    const isAdmin = currentUser.email === 'abithan.p.ihub@snsgroups.com';
+    const isCompleted = task.isCompleted || false;
+    const isMarkedIncomplete = task.markedIncompleteAt;
+    
+    let statusBadge = '';
+    if (isCompleted) {
+        statusBadge = '<span class="status-badge completed">✓ Completed</span>';
+    } else if (isMarkedIncomplete) {
+        statusBadge = '<span class="status-badge incomplete">✗ Incomplete (-5)</span>';
+    }
+    
+    let adminButtons = '';
+    if (isAdmin && !isCompleted) {
+        adminButtons = `
+            <div class="admin-actions">
+                <button class="btn-complete" onclick="markTaskComplete('${task._id}')">Mark as Completed</button>
+                ${!isMarkedIncomplete ? `<button class="btn-incomplete" onclick="markTaskIncomplete('${task._id}')">Mark as Incomplete</button>` : ''}
+            </div>
+        `;
+    }
     
     return `
-        <div class="task-card ${isMyTask ? 'my-task' : ''}">
+        <div class="task-card ${isMyTask ? 'my-task' : ''} ${isCompleted ? 'completed' : ''} ${isMarkedIncomplete ? 'incomplete' : ''}">
             <div class="task-header">
                 <div class="task-participants">
                     <span class="sender">From: <strong>${senderName}</strong></span>
                     <span class="arrow">→</span>
                     <span class="receiver">To: <strong>${receiverName}</strong></span>
                 </div>
-                <span class="task-date">${formatDate(task.createdAt)}</span>
+                <div class="task-header-right">
+                    ${statusBadge}
+                    <span class="task-date">${formatDate(task.createdAt)}</span>
+                </div>
             </div>
             
             <div class="task-body">
@@ -94,6 +117,7 @@ function createTaskCard(task) {
                     ${task.deadline ? `Deadline: ${formatDate(task.deadline)}` : 'No deadline'}
                 </span>
             </div>
+            ${adminButtons}
         </div>
     `;
 }
@@ -171,5 +195,49 @@ async function logout() {
     } catch (error) {
         console.error('Logout error:', error);
         window.location.href = '/login';
+    }
+}
+
+async function markTaskComplete(taskId) {
+    const password = prompt('Enter admin password to mark task as completed:');
+    
+    if (!password) {
+        return;
+    }
+    
+    try {
+        const data = await apiCall(`/api/messages/${taskId}/complete`, {
+            method: 'PUT',
+            body: JSON.stringify({ password })
+        });
+        
+        alert(data.message);
+        await loadTasks(currentFilter);
+    } catch (error) {
+        alert('Failed to mark task as completed: ' + error.message);
+    }
+}
+
+async function markTaskIncomplete(taskId) {
+    const password = prompt('Enter admin password to mark task as incomplete (-5 points):');
+    
+    if (!password) {
+        return;
+    }
+    
+    if (!confirm('This will deduct 5 points from the user. Are you sure?')) {
+        return;
+    }
+    
+    try {
+        const data = await apiCall(`/api/messages/${taskId}/incomplete`, {
+            method: 'PUT',
+            body: JSON.stringify({ password })
+        });
+        
+        alert(data.message);
+        await loadTasks(currentFilter);
+    } catch (error) {
+        alert('Failed to mark task as incomplete: ' + error.message);
     }
 }

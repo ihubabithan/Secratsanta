@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Public Tasks - Secret Santa</title>
+    <title>Leaderboard - Secret Santa</title>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
@@ -13,7 +13,7 @@
             <div class="nav-menu">
                 <span id="user-name" class="nav-username"></span>
                 <a href="/dashboard" class="nav-link">Dashboard</a>
-                <a href="/leaderboard" class="nav-link">Leaderboard</a>
+                <a href="/tasks" class="nav-link">Tasks</a>
                 <button id="logout-btn" class="btn btn-small">Logout</button>
             </div>
         </div>
@@ -21,19 +21,29 @@
 
     <div class="container">
         <div class="dashboard-header">
-            <h2>Public Tasks</h2>
-            <p>View all assigned tasks and messages</p>
+            <h2>🏆 Leaderboard</h2>
+            <p>Top performers based on task completion</p>
         </div>
 
         <div id="error-message" class="error-message" style="display: none;"></div>
 
         <div class="card">
-            <div id="tasks-list">
-                <p class="loading">Loading tasks...</p>
+            <div class="leaderboard-info">
+                <p><strong>Scoring System:</strong></p>
+                <ul>
+                    <li>✓ Completed Task: <strong style="color: #28a745;">+5 points</strong></li>
+                    <li>✗ Incomplete Task: <strong style="color: #dc3545;">-5 points</strong></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card">
+            <div id="leaderboard-list">
+                <p class="loading">Loading leaderboard...</p>
             </div>
         </div>
     </div>
 
-    <script src="/js/tasks.js"></script>
+    <script src="/js/leaderboard.js"></script>
 </body>
 </html>

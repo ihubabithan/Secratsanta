@@ -9,6 +9,7 @@ const connectDB = require('./config/db');
 const authRoutes = require('./routes/auth');
 const selectionRoutes = require('./routes/selections');
 const messageRoutes = require('./routes/messages');
+const leaderboardRoutes = require('./routes/leaderboard');
 
 // Connect to database
 connectDB();
@@ -31,6 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/auth', authRoutes);
 app.use('/api/selections', selectionRoutes);
 app.use('/api/messages', messageRoutes);
+app.use('/api/leaderboard', leaderboardRoutes);
 
 // Serve HTML pages
 app.get('/', (req, res) => {
@@ -51,6 +53,14 @@ app.get('/dashboard', (req, res) => {
 
 app.get('/tasks', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'tasks.html'));
+});
+
+app.get('/decrypt', (req, res) => {
+  res.sendFile(path.join(__dirname, 'decrypt.html'));
+});
+
+app.get('/leaderboard', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'leaderboard.html'));
 });
 
 // Error handler
