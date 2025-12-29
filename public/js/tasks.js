@@ -169,7 +169,8 @@ function showError(message, elementId = 'error-message') {
 function formatDate(dateString) {
     if (!dateString) return 'No deadline';
     const date = new Date(dateString);
-    return date.toLocaleString('en-US', {
+    return date.toLocaleString('en-IN', {
+        timeZone: 'Asia/Kolkata',
         year: 'numeric',
         month: 'short',
         day: 'numeric',
